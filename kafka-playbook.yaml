@@ -1,0 +1,8 @@
+---
+- name: Install and configure Kafka
+  hosts: zookeeper-nodes
+  become: yes
+  vars_files:
+    - kafka-vars.yaml
+  roles:
+    - sleighzy.kafka

@@ -1,0 +1,5 @@
+[zookeeper-nodes]
+192.168.1.143 zookeeper_id=1 ansible_user="kafka" ansible_become_pass="kaf123"
+
+[kafka-nodes]
+192.168.1.143 ansible_user="kafka" ansible_become_pass="kaf123"
