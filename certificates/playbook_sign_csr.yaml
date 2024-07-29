@@ -2,11 +2,14 @@
 - name: Firma de la CSR
   hosts: ca-servers
   become: yes
+  vars:
+    csr_files: "{{ groups['kafka-brokers'] | map('extract', hostvars, 'inventory_hostname') | list }}"
   tasks:
     - name: Firmar CSR
       command: >
         openssl x509 -req -CA /opt/kafka/ssl/CA-files/ca-cert -CAkey /opt/kafka/ssl/CA-files/ca-key
-        -in /opt/kafka/ssl/sign-request/192.168.1.12-signing-request-file -out /opt/kafka/ssl/signed-cert
+        -in /opt/kafka/ssl/sign-request/{{ item }}-signing-request-file -out /opt/kafka/ssl/{{ item }}-signed-cert
         -days 365 -CAcreateserial -passin pass:{{ keystore_password }}
       args:
-        creates: /opt/kafka/ssl/signed-cert
+        creates: /opt/kafka/ssl/{{ item }}-signed-cert
+      with_items: "{{ csr_files }}"
