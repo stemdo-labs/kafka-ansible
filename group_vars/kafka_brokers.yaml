@@ -1,0 +1,2 @@
+# group_vars/kafka_brokers.yml
+# El nombre común será definido en el playbook usando inventory_hostname
