@@ -1,0 +1,18 @@
+# playbook_ca_creation.yml
+- name: Creación de la CA
+  hosts: ca-servers
+  become: yes
+  tasks:
+    - name: Crear directorio para CA
+      file:
+        path: /opt/kafka/ssl/CA-files
+        state: directory
+        mode: '0755'
+        
+    - name: Crear clave y certificado para CA
+      command: >
+        openssl req -new -newkey rsa:4096 -days 3652 -x509
+        -subj "/CN=Kafka-Security-CA" -keyout /opt/kafka/ssl/CA-files/ca-key
+        -out /opt/kafka/ssl/CA-files/ca-cert -nodes
+      args:
+        creates: /opt/kafka/ssl/CA-files/ca-cert
