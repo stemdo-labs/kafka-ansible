@@ -1,0 +1,18 @@
+# playbook_transfer_certs.yml
+- name: Transferencia de Certificados
+  hosts: ca-servers
+  become: no
+  tasks:
+    - name: Transfer signed-cert from CA to Kafka broker
+      synchronize:
+        src: /opt/kafka/ssl/signed-cert
+        dest: /opt/kafka/ssl/signed-cert
+        mode: pull
+      delegate_to: 192.168.1.12
+
+    - name: Transfer ca-cert from CA to Kafka broker
+      synchronize:
+        src: /opt/kafka/ssl/CA-files/ca-cert
+        dest: /opt/kafka/ssl/CA-files/ca-cert
+        mode: pull
+      delegate_to: 192.168.1.12

@@ -1,0 +1,21 @@
+# playbook_import_certs.yml
+- name: Importación de Certificados en Brokers
+  hosts: kafka-brokers
+  become: yes
+  tasks:
+    - name: Añadir certificado CA al truststore
+      command: >
+        keytool -keystore /opt/kafka/ssl/kafka.server.truststore.jks -alias CARoot
+        -import -file /opt/kafka/ssl/CA-files/ca-cert -storepass "{{ keystore_password }}"
+        -keypass "{{ keystore_password }}" -noprompt
+        
+    - name: Añadir certificado CA al keystore
+      command: >
+        keytool -keystore /opt/kafka/ssl/kafka.server.keystore.jks -alias CARoot
+        -import -file /opt/kafka/ssl/CA-files/ca-cert -storepass "{{ keystore_password }}"
+        -keypass "{{ keystore_password }}" -noprompt
+        
+    - name: Añadir certificado firmado al keystore
+      command: >
+        keytool -keystore /opt/kafka/ssl/kafka.server.keystore.jks -import -file /opt/kafka/ssl/signed-cert
+        -storepass "{{ keystore_password }}" -keypass "{{ keystore_password }}" -noprompt
