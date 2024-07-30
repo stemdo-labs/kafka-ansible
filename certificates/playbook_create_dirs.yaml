@@ -1,15 +1,15 @@
 - name: Creación directorios
   hosts: kafka-brokers
-  become: no
+  become: yes
   tasks:
     - name: Crear directorio para SSL
       file:
         path: /opt/kafka/ssl/CA-files
         state: directory
         mode: '0755'
-    
+
     - name: Ajustar propiedad del directorio SSL
-      command: chown -R kafka:kafka /opt/kafka/ssl/CA-files
+      command: chown -R kafka:kafka /opt/kafka/ssl
 
     - name: Ajustar permisos del directorio SSL
-      command: chmod -R 755 /opt/kafka/ssl/CA-files
+      command: chmod -R 755 /opt/kafka/ssl

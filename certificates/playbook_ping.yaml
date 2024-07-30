@@ -1,5 +1,0 @@
----
-- hosts: kafka-brokers-test
-  gather_facts: false
-  tasks:
-    - ping:
