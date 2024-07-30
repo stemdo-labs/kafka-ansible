@@ -1,0 +1,14 @@
+[Unit]
+Description=Apache Zookeeper server
+After=network.target
+
+[Service]
+Type=forking
+User={{ kafka_user }}
+Group={{ kafka_group }}
+ExecStart=/opt/kafka/kafka_2.13-{{ kafka_version }}/bin/zookeeper-server-start.sh {{ kafka_conf_dir }}/zookeeper.properties
+ExecStop=/opt/kafka/kafka_2.13-{{ kafka_version }}/bin/zookeeper-server-stop.sh {{ kafka_conf_dir }}/zookeeper.properties
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

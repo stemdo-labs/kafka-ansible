@@ -1,4 +1,0 @@
----
-- role: sleighzy.kafka
-  kafka_version: 3.7.0
-  kafka_scala_version: 2.13

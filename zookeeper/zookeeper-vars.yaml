@@ -1,7 +1,0 @@
----
-- role: sleighzy.zookeeper
-  zookeeper_servers:
-    - 192.168.1.143
-  zookeeper_version: 3.7.2
-  zookeeper_user: kafka
-  zookeeper_group: kafka

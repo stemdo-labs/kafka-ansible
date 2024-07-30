@@ -1,8 +1,0 @@
----
-- name: Install and configure Zookeeper
-  hosts: kafka-brokers
-  become: yes
-  vars_files:
-    - zookeeper-vars.yaml
-  roles:
-    - sleighzy.zookeeper
