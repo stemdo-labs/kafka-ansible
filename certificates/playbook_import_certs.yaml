@@ -1,0 +1,47 @@
+# playbook_import_certs.yml
+- name: Importación de Certificados en Brokers
+  hosts: kafka-brokers
+  become: yes
+  tasks:
+    - name: Verificar si el alias CARoot existe en el truststore
+      command: keytool -list -keystore /opt/kafka/ssl/kafka.server.truststore.jks -storepass "{{ keystore_password }}" -alias CARoot
+      register: truststore_list
+
+    - name: Verificar si el alias CARoot existe en el keystore
+      command: keytool -list -keystore /opt/kafka/ssl/kafka.server.keystore.jks -storepass "{{ keystore_password }}" -alias CARoot
+      register: keystore_list
+
+    - name: Verificar si el alias mykey existe en el keystore
+      command: keytool -list -keystore /opt/kafka/ssl/kafka.server.keystore.jks -storepass "{{ keystore_password }}" -alias mykey
+      register: mykey_alias_check
+      ignore_errors: yes
+
+    - name: Eliminar el alias CARoot si existe en el truststore
+      command: keytool -delete -keystore /opt/kafka/ssl/kafka.server.truststore.jks -storepass "{{ keystore_password }}" -alias CARoot
+      when: truststore_list.rc == 0
+
+    - name: Eliminar el alias CARoot si existe en el keystore
+      command: keytool -delete -keystore /opt/kafka/ssl/kafka.server.keystore.jks -storepass "{{ keystore_password }}" -alias CARoot
+      when: keystore_list.rc == 0
+
+    - name: Eliminar el alias mykey si existe en el keystore
+      command: keytool -delete -keystore /opt/kafka/ssl/kafka.server.keystore.jks -storepass "{{ keystore_password }}" -alias mykey
+      when: mykey_alias_check.rc == 0
+      ignore_errors: yes
+
+    - name: Añadir certificado CA al truststore
+      command: >
+        keytool -keystore /opt/kafka/ssl/kafka.server.truststore.jks -alias CARoot
+        -import -file /opt/kafka/ssl/CA-files/ca-cert -storepass "{{ keystore_password }}"
+        -keypass "{{ keystore_password }}" -noprompt
+        
+    - name: Añadir certificado CA al keystore
+      command: >
+        keytool -keystore /opt/kafka/ssl/kafka.server.keystore.jks -alias CARoot
+        -import -file /opt/kafka/ssl/CA-files/ca-cert -storepass "{{ keystore_password }}"
+        -keypass "{{ keystore_password }}" -noprompt
+        
+    - name: Añadir certificado firmado al keystore
+      command: >
+        keytool -keystore /opt/kafka/ssl/kafka.server.keystore.jks -import -file /opt/kafka/ssl/signed-cert
+        -storepass "{{ keystore_password }}" -keypass "{{ keystore_password }}" -noprompt

@@ -8,6 +8,20 @@
         path: /opt/kafka/ssl/CA-files
         state: directory
         mode: '0755'
+        owner: kafka
+    
+    - name: Crear directorio para las peticions de firma de los certificados
+      file:
+        path: /opt/kafka/ssl/sign-request
+        state: directory
+        mode: '0755'
+        owner: kafka
+
+    - name: Ajustar propiedad del directorio SSL
+      command: chown -R kafka:kafka /opt/kafka/ssl
+
+    - name: Ajustar permisos del directorio SSL
+      command: chmod -R 755 /opt/kafka/ssl
         
     - name: Crear clave y certificado para CA
       command: >

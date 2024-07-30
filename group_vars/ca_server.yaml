@@ -1,0 +1,2 @@
+# group_vars/ca_server.yml
+common_name: "Kafka-Security-CA"

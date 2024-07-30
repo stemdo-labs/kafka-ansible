@@ -1,0 +1,7 @@
+---
+- import_playbook: playbook_ca_creation.yaml
+- import_playbook: playbook_create_dirs.yaml
+- import_playbook: playbook_keystore_csr.yaml
+- import_playbook: playbook_sign_csr.yaml
+- import_playbook: playbook_transfer_certs.yaml
+- import_playbook: playbook_import_certs.yaml
