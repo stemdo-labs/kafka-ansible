@@ -1,0 +1,17 @@
+---
+- name: Descargar y descomprimir Kafka
+  get_url:
+    url: "{{ kafka_download_url }}"
+    dest: "/tmp/kafka.tgz"
+
+- name: Descomprimir Kafka
+  unarchive:
+    src: "/tmp/kafka.tgz"
+    dest: "/opt/kafka"
+    remote_src: yes
+
+- name: Añadir Kafka al PATH del usuario
+  lineinfile:
+    path: "/home/{{ kafka_user }}/.bashrc"
+    line: 'PATH="$PATH:{{ kafka_bin_dir }}"'
+    create: yes

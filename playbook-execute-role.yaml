@@ -1,0 +1,7 @@
+---
+- name: Preparar y Configurar Kafka y Zookeeper
+  hosts: kafka-brokers
+  become: true
+
+  roles:
+    - kafka-role

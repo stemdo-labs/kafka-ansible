@@ -1,0 +1,5 @@
+---
+- import_tasks: download_and_install.yaml
+- import_tasks: configure.yaml
+- import_tasks: permissions.yaml
+- import_tasks: services.yaml

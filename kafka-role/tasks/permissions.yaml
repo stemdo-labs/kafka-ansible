@@ -1,0 +1,23 @@
+---
+- name: Verificar y configurar permisos y propietarios de Kafka y Zookeeper
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0755'
+  with_items:
+    - { path: "/opt/kafka" }
+    - { path: "{{ kafka_data_dir }}" }
+    - { path: "{{ zookeeper_data_dir }}" }
+
+- name: Asegurarse de que los archivos de configuración tienen los permisos correctos
+  file:
+    path: "{{ item.path }}"
+    state: file
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0644'
+  with_items:
+    - { path: "{{ kafka_conf_file }}" }
+    - { path: "{{ zookeeper_conf_file }}" }
