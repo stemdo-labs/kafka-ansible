@@ -5,6 +5,7 @@
     state: directory
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
+  become: true
 
 - name: Crear archivo myid para Zookeeper
   copy:
@@ -12,6 +13,7 @@
     dest: "{{ zookeeper_data_dir }}/myid"
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
+  become: true
 
 - name: Crear directorio de configuración de Kafka
   file:
@@ -19,6 +21,7 @@
     state: directory
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
+  become: true
 
 - name: Configurar Zookeeper
   template:
@@ -26,6 +29,7 @@
     dest: "{{ zookeeper_conf_file }}"
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
+  become: true
 
 - name: Configurar Kafka
   template:
@@ -33,3 +37,4 @@
     dest: "{{ kafka_conf_file }}"
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
+  become: true
