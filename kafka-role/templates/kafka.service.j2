@@ -1,14 +1,19 @@
 [Unit]
-Description=Apache Kafka server
-After=network.target
+Description=Apache Kafka
+Requires=zookeeper.service
+After=zookeeper.service
 
 [Service]
-Type=forking
+Type=simple
+
 User={{ kafka_user }}
 Group={{ kafka_group }}
-ExecStart=/opt/kafka/kafka_2.13-{{ kafka_version }}/bin/kafka-server-start.sh {{ kafka_conf_dir }}/kafka.properties
-ExecStop=/opt/kafka/kafka_2.13-{{ kafka_version }}/bin/kafka-server-stop.sh
-Restart=on-failure
+Environment=KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:{{ log4j_dir }}"
+Environment=KAFKA_HEAP_OPTS="-Xmx2G -Xms2G"
+Environment=JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.12.0.7-2.el8.x86_64
+
+ExecStart={{ kafka_bin_dir }}/kafka-server-start.sh {{ kafka_conf_file }}
+ExecStop={{ kafka_bin_dir }}/kafka-server-stop.sh
 
 [Install]
 WantedBy=multi-user.target
