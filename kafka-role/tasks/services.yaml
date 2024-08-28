@@ -1,0 +1,30 @@
+---
+- name: Crear el archivo de servicio para Zookeeper
+  template:
+    src: zookeeper.service.j2
+    dest: "/etc/systemd/system/zookeeper.service"
+  become: true
+
+- name: Crear el archivo de servicio para Kafka
+  template:
+    src: kafka.service.j2
+    dest: "/etc/systemd/system/kafka.service"
+  become: true
+
+- name: Recargar los archivos de servicio de systemd
+  command: systemctl daemon-reload
+  become: true
+
+- name: Iniciar y habilitar Zookeeper
+  systemd:
+    name: zookeeper
+    state: started
+    enabled: yes
+  become: true
+
+- name: Iniciar y habilitar Kafka
+  systemd:
+    name: kafka
+    state: started
+    enabled: yes
+  become: true

@@ -1,0 +1,40 @@
+---
+- name: Crear directorio de datos para Zookeeper
+  file:
+    path: "{{ zookeeper_data_dir }}"
+    state: directory
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  become: true
+
+- name: Crear archivo myid para Zookeeper
+  copy:
+    content: "{{ broker_id }}"
+    dest: "{{ zookeeper_data_dir }}/myid"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  become: true
+
+- name: Crear directorio de configuración de Kafka
+  file:
+    path: "{{ kafka_conf_dir }}"
+    state: directory
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  become: true
+
+- name: Configurar Zookeeper
+  template:
+    src: zookeeper.properties.j2
+    dest: "{{ zookeeper_conf_file }}"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  become: true
+
+- name: Configurar Kafka
+  template:
+    src: kafka.properties.j2
+    dest: "{{ kafka_conf_file }}"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+  become: true
